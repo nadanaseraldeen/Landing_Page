@@ -3,6 +3,11 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.6;
+  font-size: 16px;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 .navbar {
@@ -12,6 +17,9 @@ body {
   background: #333;
   color: #fff;
   z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
 }
 
 .navbar ul {
@@ -30,6 +38,8 @@ body {
   text-decoration: none;
   color: #fff;
   cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 
 .navbar ul li a.active {
@@ -37,6 +47,13 @@ body {
   color: #333;
   padding: 5px 10px;
   border-radius: 5px;
+}
+
+.navbar__toggle {
+  display: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #fff;
 }
 
 .intro-section {
@@ -56,9 +73,16 @@ body {
   margin-bottom: 15px;
 }
 
+.intro-container,
+.landing__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
 section {
-  padding: 100px 20px;
-  margin-top: 60px;
+  padding: 80px 15px;
+  margin: 0 auto;
   border-bottom: 1px solid #ccc;
   background-color: #f4f4f4;
 }
@@ -90,6 +114,35 @@ p {
 }
 
 @media (max-width: 768px) {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    font-size: 14px;
+  }
+  .intro-container {
+    padding: 10px 10px;
+    padding-top: 200px;
+  }
+  .intro-container h1 {
+    font-size: 2rem;
+  }
+
+  section {
+    padding: 10px 10px;
+    padding-top: 240px;
+  }
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: #333;
+    padding: 10px;
+  }
   .navbar ul {
     flex-direction: column;
     align-items: center;
@@ -97,6 +150,12 @@ p {
 
   .navbar.active ul {
     display: flex;
+  }
+
+  .navbar ul.active {
+    display: flex;
+    background: #333;
+    width: 100%;
   }
 
   .navbar li {
