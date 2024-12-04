@@ -2,43 +2,43 @@ const navbarList = document.getElementById("navbar__list");
 const sections = document.querySelectorAll("section");
 const scrollToTopButton = document.getElementById("scrollToTop");
 
-let timer;
-const navbar5 = document.querySelector(".navbar");
+let inactivityTimer;
+const navbar = document.querySelector(".navbar");
 
 // Hide navbar after 1.5 seconds of inactivity
 window.addEventListener("scroll", () => {
   navbar.style.top = "0";
-  clearTimeout(timer);
-  timer = setTimeout(() => {
-    navbar5.style.top = "-60px";
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(() => {
+    navbar.style.top = "-60px";
   }, 1500);
 });
 
-// Toggle navbar on click
-const navbar = document.getElementById("navbar");
+// Toggle navbar visibility on click (for mobile view)
 navbar.addEventListener("click", () => {
   navbar.classList.toggle("active");
 });
 
-// Build the navbar dynamically
-function buildNavbar() {
+// Dynamically generate the navbar based on sections
+function createNavbar() {
+  const navList = document.createElement("ul");
   sections.forEach((section) => {
-    const navItem = document.createElement("li");
-    const anchor = document.createElement("a");
-    anchor.textContent = section.dataset.nav;
-    anchor.href = `#${section.id}`;
-    anchor.classList.add("menu__link");
-    navItem.appendChild(anchor);
-    navbarList.appendChild(navItem);
+    const listItem = document.createElement("li");
+    const link = document.createElement("a");
+    link.textContent = section.getAttribute("data-nav");
+    link.setAttribute("href", `#${section.id}`);
+    listItem.appendChild(link);
+    navList.appendChild(listItem);
   });
+  navbar.appendChild(navList);
 }
 
-// Highlight active section and navbar link
-function makeActive() {
+// Highlight the active section and corresponding navbar link
+function updateActiveSection() {
   sections.forEach((section) => {
-    const box = section.getBoundingClientRect();
+    const sectionRect = section.getBoundingClientRect();
     const sectionLink = document.querySelector(`a[href="#${section.id}"]`);
-    if (box.top <= 150 && box.bottom >= 150) {
+    if (sectionRect.top <= 150 && sectionRect.bottom >= 150) {
       section.classList.add("active");
       sectionLink.classList.add("active");
     } else {
@@ -48,7 +48,7 @@ function makeActive() {
   });
 }
 
-// Scroll to the corresponding section when clicking on navbar link
+// Smooth scroll to the section when a navbar link is clicked
 function scrollToSection(event) {
   if (event.target.nodeName === "A") {
     event.preventDefault();
@@ -58,8 +58,8 @@ function scrollToSection(event) {
   }
 }
 
-// Handle scroll to top button visibility
-function handleScrollToTopButton() {
+// Handle the visibility of the scroll-to-top button
+function toggleScrollToTopButton() {
   if (window.scrollY > 300) {
     scrollToTopButton.style.display = "block";
   } else {
@@ -67,27 +67,30 @@ function handleScrollToTopButton() {
   }
 }
 
-// Scroll to top when the button is clicked
+// Scroll to the top when the button is clicked
 scrollToTopButton.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
-// Event listener for scrolling and button visibility
+// Update active section and scroll-to-top button visibility on scroll
 document.addEventListener("scroll", () => {
-  makeActive();
-  handleScrollToTopButton();
+  updateActiveSection();
+  toggleScrollToTopButton();
 });
 
-// Event listener for navbar links to smooth scroll to sections
+// Listen for navbar link clicks and scroll to the respective section
 navbarList.addEventListener("click", scrollToSection);
 
-// Create navbar toggle for mobile view
+// Create the navbar toggle button for mobile view
 const navbarToggle = document.createElement("div");
 navbarToggle.classList.add("navbar__toggle");
 navbarToggle.textContent = "☰";
 navbar.insertBefore(navbarToggle, navbar.firstChild);
 
+// Toggle the navbar when the hamburger icon is clicked
 navbarToggle.addEventListener("click", () => {
   navbar.classList.toggle("active");
 });
-buildNavbar();
+
+// Generate the navbar on page load
+createNavbar();
